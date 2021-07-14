@@ -18,7 +18,7 @@ const MainPage = () => {
 
             <ImgContainer>
                 <center>
-                    <img src={MainLogoImg} width="300px" height="300px" />
+                    <img src={MainLogoImg} width="300px" height="300px" alt="메인 페이지 로고" />
                 </center>
                 <TextContainer>
                     <center>
@@ -31,7 +31,7 @@ const MainPage = () => {
                             
                                 <Content id="pcfl">
                                     <Link to="/pcfl">
-                                        <ContentImg src={PCFLImg} />
+                                        <ContentImg src={PCFLImg} alt="PCFL 로고" />
                                     </Link>
                                     <p style={{ fontFamily: "Android-101", fontSize: "18px"}}>PCFL</p>
                                     
