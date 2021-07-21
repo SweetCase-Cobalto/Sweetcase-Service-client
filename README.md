@@ -7,6 +7,7 @@
 ![react](https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB)
 ![react router](https://img.shields.io/badge/React_Router-CA4245?style=flat-square&logo=react-router&logoColor=white)
 ![bootstrap](https://img.shields.io/badge/Bootstrap-563D7C?style=flat-square&logo=bootstrap&logoColor=white)
+![firebase](https://img.shields.io/badge/firebase-ffca28?style=flat-square&logo=firebase&logoColor=black)
 
 ## 현재 운영되고 있는 서비스
 
