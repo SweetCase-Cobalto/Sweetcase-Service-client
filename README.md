@@ -1,5 +1,7 @@
 # Sweetcase Service Web(Frontend)
 ### 직접 만든 간단한 알고리즘이나 Library를 웹상으로 지원하기 위한 서비스 (Front End)
+사이트: https://sweetcase-service-825d9.firebaseapp.com/ <br />
+[Github Backend Repo](https://github.com/SweetCase-Cobalto/Sweetcase-Service-SingleModuleAPI-Server)
 
 <img src="src/asset/sweetcase-service-logo.png" width="300px" height="300px"/>
 
@@ -10,7 +12,6 @@
 ![firebase](https://img.shields.io/badge/firebase-ffca28?style=flat-square&logo=firebase&logoColor=black)
 
 ## 현재 운영되고 있는 서비스
-
 |서비스명|설명|버전|
 |---|---|---|
 |[PCFL](https://github.com/Vector-7/PCFL)|Midi파일에서 연속된 서스테인(CC64)의 간격을 벌려서 FL Studio에서 임포트 할 때 불협화음이 발생하지 않게 처리|v1.0.0|
