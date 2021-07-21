@@ -52,7 +52,6 @@ const PCFL = () => {
             }
         }).then((r) => {
             // 성공시 바로 파일 다운로드
-            console.log(r);
             fileDownload(r.data, 'output.mid');
         }).catch((e) => {
             // 서버측 실패 시 Error 호출
