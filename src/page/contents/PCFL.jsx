@@ -2,6 +2,9 @@ import styled from "styled-components";
 import { Helmet } from "react-helmet";
 import {Form, Button} from  'react-bootstrap';
 import {useState} from 'react';
+import axios from 'axios';
+import fileDownload from 'js-file-download';
+
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -16,6 +19,52 @@ const PCFL = () => {
         "file": "",
         "interval": 0
     });
+
+    // Submit Handler
+    /*
+    async function handleSubmit(e) {
+        
+        const fileData = e.target.elements['form-file'].files[0];
+        const formData = new FormData();
+        formData.append("target_file", fileData);
+        
+
+        await axios.post(targetURL, formData, {
+            "headers": {
+                'Content-Type': 'multipart/form-data',
+                'responseType': 'blob'
+            }
+        }).then((r) => {
+            fileDownload(r.data, "output.mid");
+        }).catch((e) => {
+            window.alert(e);
+        })
+    }
+    */
+
+    function submitEvent(e) {
+        
+        e.preventDefault();
+
+        const formData = new FormData();
+        formData.append('target_file', inputData.file, inputData.file.name);
+
+        
+        const targetURL = "http://localhost:8000/pcfl" + "?interval=" + String(inputData.interval);
+        axios.post(targetURL, formData, {
+            headers: {
+              'content-type': 'multipart/form-data',
+              'Accept': 'multipart/form-data'
+            }
+          }
+        ).then((r) => {
+            fileDownload(r.data, 'output.mid');
+        }).catch((e) => {
+            window.alert(e);
+        })
+        
+    }
+
     return (
         <div>
             <Helmet>
@@ -38,16 +87,16 @@ const PCFL = () => {
                 </div>
                 <div>
                     <center>
-                        <Form.Group controlId="inputedMidiFileForm" className="mb-3" 
+                        <form>
+                        <Form.Group controlId="inputedMidiFileForm" className="mb-3"
                                 style={{ border: "1px blue solid", paddingTop: "30px", paddingLeft: "15px", paddingRight: "15px", paddingBottom: "30px"}}>
                             <Form.Label>Input your midi file</Form.Label><br />
-                            <Form.Control type="file" value={inputData.file} onChange={e => {
-
+                            <Form.Control type="file" name="form-file" onChange={e => {
                                 // Checking Data
                                 let filenameSplited = e.target.value.split('.')
                                 if(filenameSplited[filenameSplited.length - 1] == "mid" || filenameSplited[filenameSplited.length - 1] == "midi") {
                                     setInputData({
-                                        "file": e.target.value,
+                                        "file": e.target.files[0],
                                         "interval": inputData.interval
                                     });
                                 } else {
@@ -62,12 +111,10 @@ const PCFL = () => {
                                     "interval": e.target.value
                                 });
                             }} />
-                            <Form.Text className="text-muted">서스테인 사이의 간격을 의미합니다 0.1 ~ 0.5 사이를 권장합니다. </Form.Text><br />
+                            <Form.Text className="text-muted">서스테인 사이의 간격을 의미합니다 0.01 ~ 0.2 사이를 권장합니다. </Form.Text><br />
 
-                            <Button variant="outline-success" style={{ marginTop: "30px", width: "40%" }} onClick={() => {
-                                console.log(inputData);
-                            }} >Process</Button>
-                        </Form.Group>
+                            <Button type="button" variant="outline-success" style={{ marginTop: "30px", width: "40%" }} onClick={submitEvent}>Process</Button>
+                        </Form.Group></form>
                     </center>
                 </div>
             </Layer>
