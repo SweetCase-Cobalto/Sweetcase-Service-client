@@ -5,13 +5,14 @@ import {useState} from 'react';
 import axios from 'axios';
 import fileDownload from 'js-file-download';
 
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import '../../asset/font/font.css';
 import Footer from '../../components/Footer';
 
 import PCFLImg from '../../asset/pcfl.svg';
+
+import URL from '../../asset/conifig.json';
 
 const PCFL = () => {
     
@@ -20,49 +21,43 @@ const PCFL = () => {
         "interval": 0
     });
 
-    // Submit Handler
-    /*
-    async function handleSubmit(e) {
-        
-        const fileData = e.target.elements['form-file'].files[0];
-        const formData = new FormData();
-        formData.append("target_file", fileData);
-        
-
-        await axios.post(targetURL, formData, {
-            "headers": {
-                'Content-Type': 'multipart/form-data',
-                'responseType': 'blob'
-            }
-        }).then((r) => {
-            fileDownload(r.data, "output.mid");
-        }).catch((e) => {
-            window.alert(e);
-        })
-    }
-    */
-
     function submitEvent(e) {
-        
+        // Send FILE Event
         e.preventDefault();
 
+        // Checking PROPS
+        if(inputData.interval < 0.01 || inputData.interval > 0.5) {
+            window.alert("interval은 0.01과 0.05 사이어야 합니다.");
+            return
+        }
+        if(inputData.file == "") {
+            window.alert("미디파일을 추가해 주세요");
+            return
+        }
+        
+        // File Form Data 생성
         const formData = new FormData();
         formData.append('target_file', inputData.file, inputData.file.name);
-
         
-        const targetURL = "http://localhost:8000/pcfl" + "?interval=" + String(inputData.interval);
-        axios.post(targetURL, formData, {
+        // Backend 전송
+        const targetURL = URL["backend-url"]+"pcfl" + "?interval=" + String(inputData.interval);
+        axios({
+            method: 'post',
+            url: targetURL,
+            responseType: 'blob',
+            data: formData,
             headers: {
-              'content-type': 'multipart/form-data',
-              'Accept': 'multipart/form-data'
+                'content-type': 'multipart/form-data',
+                'Accept': 'multipart/form-data',
             }
-          }
-        ).then((r) => {
+        }).then((r) => {
+            // 성공시 바로 파일 다운로드
+            console.log(r);
             fileDownload(r.data, 'output.mid');
         }).catch((e) => {
-            window.alert(e);
+            // 서버측 실패 시 Error 호출
+            window.alert("ERROR");
         })
-        
     }
 
     return (
@@ -90,8 +85,10 @@ const PCFL = () => {
                         <form>
                         <Form.Group controlId="inputedMidiFileForm" className="mb-3"
                                 style={{ border: "1px blue solid", paddingTop: "30px", paddingLeft: "15px", paddingRight: "15px", paddingBottom: "30px"}}>
+
                             <Form.Label>Input your midi file</Form.Label><br />
                             <Form.Control type="file" name="form-file" onChange={e => {
+
                                 // Checking Data
                                 let filenameSplited = e.target.value.split('.')
                                 if(filenameSplited[filenameSplited.length - 1] == "mid" || filenameSplited[filenameSplited.length - 1] == "midi") {
@@ -105,7 +102,7 @@ const PCFL = () => {
                             }} /><br /><br />
                             
                             <Form.Label>Interval</Form.Label>
-                            <Form.Control type="number" step="0.01" placeholder="0.01 ~ 0.5" value={inputData.interval} onChange={e => {
+                            <Form.Control type="number" step="0.01" min="0.01" max="0.5" placeholder="0.01 ~ 0.5" value={inputData.interval} onChange={e => {
                                 setInputData({
                                     "file": inputData.file,
                                     "interval": e.target.value
